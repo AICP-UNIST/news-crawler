@@ -1,5 +1,5 @@
 ################
-# UNIST MIPS SIMULATOR GIT MESSAGE TEMPLATE
+# UNIST AICP GIT MESSAGE TEMPLATE
 # [커밋 타입 종류]
 # feat : 새로운 기능 추가
 # fix : 버그 수정

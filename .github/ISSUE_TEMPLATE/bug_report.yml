@@ -1,7 +1,7 @@
 name: Bug Report 🪲
 description: Create a bug report to help us improve
-title: '[Bug]: '
-labels: ['🐞 Bug Report']
+title: "[Bug]: "
+labels: ["🐞 Bug Report"]
 body:
   - type: markdown
     attributes:
@@ -14,7 +14,7 @@ body:
       label: Version
       description: |
         The version of Mips-simulator-js you are using.
-        Is it the [latest](https://github.com/mipsSimulatorUNIST/simulator/tree/release)? Test and see if the bug has already been fixed.
+        Is it the [latest](https://github.com/AICP-UNIST/news-crawler/tree/release)? Test and see if the bug has already been fixed.
       placeholder: ex. 2.1.9
     validations:
       required: true

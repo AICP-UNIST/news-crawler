@@ -1,17 +1,18 @@
 # GIT Message Template
 
 ## .gitmessage.txt
+
 커밋 시 Git은 commit.template 옵션에 설정한 템플릿 파일을 보여준다.
 
 커밋 메시지 템플릿을 지정하면 커밋 메시지를 작성할 때 일정한 스타일을 유지할 수 있다.
 
 .gitmessage.txt 파일은 아래와 같이 구성되어있으며, 커밋시에 적용됩니다.
 
-+ [#Issue Number]를 커밋메세지 앞에 추가하면 이슈별로 커밋을 관리할 수 있음
+- [#Issue Number]를 커밋메세지 앞에 추가하면 이슈별로 커밋을 관리할 수 있음
 
 ```
 ################
-# UNIST MIPS SIMULATOR GIT MESSAGE TEMPLATE
+# UNIST AICP GIT MESSAGE TEMPLATE
 # [커밋 타입 종류]
 # feat : 새로운 기능 추가
 # fix : 버그 수정
@@ -44,7 +45,9 @@
 ```
 
 ## 적용 방법
+
 ### 템플릿 파일 설정
+
 템플릿 파일을 설정해놓으면, git commit 명령을 실행할 때 지정한 템플릿 메시지를 편집기에서 매번 사용할 수 있다.
 
 템플릿 파일을 설정한다는 것은 commit.template에 .gitmessage.txt 파일을 등록한다는 의미다.
@@ -54,20 +57,23 @@
 ```
 git config --global commit.template .gitmessage.txt
 ```
-----
+
+---
 
 ### 에디터 사용 방법
+
 ```
 git add .
 git commit
 ```
-위 명령어를 사용하면 변경된 파일들을 스테이지에 올리고 commit을 실행한다. 
 
-이후 설정된 template이 터미널 에디터에 출력되고, 
+위 명령어를 사용하면 변경된 파일들을 스테이지에 올리고 commit을 실행한다.
+
+이후 설정된 template이 터미널 에디터에 출력되고,
 
 ' i '를 눌러 INSERT 모드로 변경한다.
 
-변경한 후에는 
+변경한 후에는
 
 ```
 ESC + :wq! + ENTER
@@ -80,9 +86,11 @@ ESC + :wq! + ENTER
 ```
 ESC + :qa + ENTER
 ```
+
 를 통해 commit 작업을 취소할 수 있다.
 
-----
+---
 
 ## Reference
+
 https://velog.io/@bky373/Git-%EC%BB%A4%EB%B0%8B-%EB%A9%94%EC%8B%9C%EC%A7%80-%ED%85%9C%ED%94%8C%EB%A6%BF
