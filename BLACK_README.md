@@ -73,4 +73,31 @@ c. 설정 검색창에서 "python formatting provider"를 검색하여 관련 �
 
 d. "Python Formatting Provider"를 "black"으로 설정합니다. 이렇게 하면 Visual Studio Code에서 파이썬 코드의 포맷터로 black이 사용됩니다.
 
-e. (선택 사항) 저장할 때 코드를 자동으로 포맷하려면, 설정 검색창에서 "editor format on save"를 검색하고 "Editor: Format On Save" 옵션을 활성화하세요.
+e. 저장할 때 코드를 자동으로 포맷하려면, 설정 검색창에서 "editor format on save"를 검색하고 "Editor: Format On Save" 옵션을 활성화하세요.
+
+Tips :
+auto formatting이 잘 되지 않을 때는 아래 솔루션을 참고하세요.
+
+a. Press Ctrl+Shift+P on Windows/Linux or Cmd+Shift+P on macOS to bring up the Command Palette.
+
+b. Type "Open Settings (JSON)" in the Command Palette and select the "Preferences: Open Settings (JSON)" command. If you accidentally opened the read-only default settings file again, close it.
+
+c. Now, in the Command Palette, type "Open Workspace Settings (JSON)" and select the "Preferences: Open Workspace Settings (JSON)" command. This will open your workspace settings.json file, which should be editable.
+
+d. Add the following configuration to your settings.json file:
+
+```json
+{
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.python",
+    "editor.formatOnSave": true,
+    "python.formatting.provider": "black"
+  }
+}
+```
+
+This configuration will set black as the default formatter for Python files, enable format on save, and ensure that the Python extension uses black as the formatting provider.
+
+e. Save your settings.json file and reload Visual Studio Code.
+
+With this configuration, black should automatically format your Python code in Visual Studio Code when you save a file. If you still encounter issues, please check the "Problems" and "Output" panels in Visual Studio Code (found in the "View" menu) for any error messages or warnings related to black or the Python extension. This can provide more information on what's causing the issue and help you find a solution.

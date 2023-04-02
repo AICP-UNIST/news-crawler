@@ -1,3 +1,3 @@
 # Item classes for data extraction
 
-a =  1
+a = 1
