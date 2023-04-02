@@ -61,6 +61,8 @@ All done! ✨ 🍰 ✨
 3 files reformatted, 8 files left unchanged.
 ```
 
+---
+
 ## Visual Studio Code에서 black 통합하기
 
 black을 사용하여 Visual Studio Code에서 코드를 자동으로 포맷하려면 다음 단계를 따르세요
@@ -75,7 +77,10 @@ d. "Python Formatting Provider"를 "black"으로 설정합니다. 이렇게 하�
 
 e. 저장할 때 코드를 자동으로 포맷하려면, 설정 검색창에서 "editor format on save"를 검색하고 "Editor: Format On Save" 옵션을 활성화하세요.
 
-Tips :
+---
+
+## Tips :
+
 auto formatting이 잘 되지 않을 때는 아래 솔루션을 참고하세요.
 
 a. Press Ctrl+Shift+P on Windows/Linux or Cmd+Shift+P on macOS to bring up the Command Palette.
