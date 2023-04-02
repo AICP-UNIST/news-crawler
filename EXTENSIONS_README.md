@@ -16,7 +16,7 @@ Helps generate docstrings for Python functions quickly and consistently.
 
 A popular Python linter that helps you identify and fix issues in your code.
 
-## black
+## Black Formatter
 
 An opinionated code formatter for Python, keeping your code clean and consistent.
 
