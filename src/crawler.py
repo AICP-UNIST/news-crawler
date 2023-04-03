@@ -1,7 +1,10 @@
 import requests
 from bs4 import BeautifulSoup as bs
-import csv
+import pandas as pd
 from datetime import datetime, timedelta
+from items import article_contents
+
+headers = {"User-Agent": "Chrome/103.0.0.0"}
 
 
 class NaverNewsCrawler:
@@ -12,15 +15,24 @@ class NaverNewsCrawler:
         self.articles = []
         self.article_dict = {}
 
-    def extract_title_and_link(self, url):
+    def extract_title_and_link(self, title, url, contents):
         article_dict = {}
-        response = requests.get(url)
-        html = response.text
-        soup = bs(html, "html.parser")
-        article_title = soup.select_one("#articleTitle").text
-        article_dict["title"] = article_title
+        article_dict["title"] = title
         article_dict["link"] = url
+        article_dict["contents"] = contents
         return article_dict
+
+    def find_content(self, link):
+        for domain, content_info in article_contents.items():
+            if domain in link:
+                detail_page = requests.get(
+                    link,
+                    headers=headers,
+                )
+                soup = bs(detail_page.content, "html.parser")
+                content = soup.find(*content_info)
+                return content
+        return None
 
     def crawl_news(self, query):
         url = (
@@ -37,7 +49,7 @@ class NaverNewsCrawler:
             + "%2Ca%3A&start="
         )
         count = 1
-        while True:
+        while count == 1:
             if len(self.articles) >= self.max_articles:
                 break
             if count == 1:
@@ -47,11 +59,15 @@ class NaverNewsCrawler:
             html = res.text
             soup = bs(html, "html.parser")
             links = soup.select(".news_area > a")
+
             for link in links:
                 article_link = link["href"]
-                if "news.naver.com" not in article_link:
-                    continue
-                article_dict = self.extract_title_and_link(article_link)
+                article_title = link["title"]
+                print(article_link)
+                article_contents = self.find_content(article_link)
+                article_dict = self.extract_title_and_link(
+                    article_title, article_link, article_contents
+                )
                 self.articles.append(article_dict)
                 self.article_dict[article_dict["title"]] = article_link
                 if len(self.articles) >= self.max_articles:
@@ -59,9 +75,5 @@ class NaverNewsCrawler:
             count += 1
 
     def save_to_csv(self, file_name):
-        with open(file_name, "w", encoding="utf-8", newline="") as csvfile:
-            fieldnames = ["title", "link"]
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-            writer.writeheader()
-            for article in self.articles:
-                writer.writerow(article)
+        df = pd.DataFrame(self.articles, columns=["title", "link", "contents"])
+        df.to_csv(file_name, index=False, encoding="utf-8-sig")
