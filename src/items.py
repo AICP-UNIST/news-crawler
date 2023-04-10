@@ -1,6 +1,6 @@
 # Item classes for data extraction
 article_contents = {
-    "naver": ("div", {"id": "articleBodyContents"}),
+    "naver": ("div", {"id": "newsct_article"}),
     "daum": ("div", {"id": "articleBody"}),
     "chosun": ("section", {"class": "article-body"}),  # 조선일보
     "hani": ("div", {"class": "article-text"}),  # 한겨례
