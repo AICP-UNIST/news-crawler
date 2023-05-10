@@ -64,15 +64,15 @@ class NaverNewsCrawler:
                 print(len(self.articles))
                 if len(self.articles) >= self.max_articles:
                     break
-                # if news.find("dt", {"class": "photo"}) is not None:
-                #     continue
-                # if news.find("dt").find("span", {"class": "lede"}) is not None:
-                #     continue
                 article_link = news.find("a")["href"]
+                article_title = news.find("img")
+                if article_title is None:
+                    article_title = news.find("a").text.strip()
+                else:
+                    article_title = news.find("img")["alt"].strip()
+                print(article_title)
                 print(article_link)
-                article_title = news.find("a").text.strip()
                 article_contents = self.find_content(article_link)
-                print(article_contents)
                 if article_contents is not None:
                     article_dict = self.extract_title_and_link(
                         article_title, article_link, article_contents
