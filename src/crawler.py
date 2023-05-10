@@ -31,48 +31,55 @@ class NaverNewsCrawler:
                 )
                 soup = bs(detail_page.content, "html.parser")
                 content = soup.find(*content_info)
-                return content
+                if content:
+                    content_text = (
+                        content.get_text()
+                        .replace("\n", " ")
+                        .replace("\t", " ")
+                        .strip()
+                    )
+                    return content_text
+                else:
+                    return None
         return None
 
-    def crawl_news(self, query):
-        url = (
-            "https://search.naver.com/search.naver?where=news&query="
-            + query
-            + "&sort=0&ds="
-            + self.start_date.strftime("%Y.%m.%d")
-            + "&de="
-            + self.end_date.strftime("%Y.%m.%d")
-            + "&nso=so%3Ar%2Cp%3Afrom"
-            + self.start_date.strftime("%Y%m%d")
-            + "to"
-            + self.end_date.strftime("%Y%m%d")
-            + "%2Ca%3A&start="
-        )
+    def crawl_news(self):
+        page = 1
         count = 1
         while count == 1:
             if len(self.articles) >= self.max_articles:
                 break
-            if count == 1:
-                res = requests.get(url)
-            else:
-                res = requests.get(url + str((count - 1) * 10 + 1))
-            html = res.text
-            soup = bs(html, "html.parser")
-            links = soup.select(".news_area > a")
 
-            for link in links:
-                article_link = link["href"]
-                article_title = link["title"]
-                print(article_link)
-                article_contents = self.find_content(article_link)
-                article_dict = self.extract_title_and_link(
-                    article_title, article_link, article_contents
-                )
-                self.articles.append(article_dict)
-                self.article_dict[article_dict["title"]] = article_link
+            url = f"https://news.naver.com/main/list.naver?mode=LS2D&mid=shm&sid1=101&listType=summary&range={self.end_date.strftime('%Y%m%d')}|{self.start_date.strftime('%Y%m%d')}&page={page}"
+            res = requests.get(url, headers=headers)
+            soup = bs(res.content, "html.parser")
+            news_list = soup.find("ul", {"class": "type06_headline"}).find_all(
+                "li", {"class": ""}
+            )
+            news_list += soup.find("ul", {"class": "type06"}).find_all(
+                "li", {"class": ""}
+            )
+
+            for news in news_list:
+                print(len(self.articles))
                 if len(self.articles) >= self.max_articles:
                     break
-            count += 1
+                article_link = news.find("a")["href"]
+                article_title = news.find("img")
+                if article_title is None:
+                    article_title = news.find("a").text.strip()
+                else:
+                    article_title = news.find("img")["alt"].strip()
+                print(article_title)
+                print(article_link)
+                article_contents = self.find_content(article_link)
+                if article_contents is not None:
+                    article_dict = self.extract_title_and_link(
+                        article_title, article_link, article_contents
+                    )
+                    self.articles.append(article_dict)
+                    self.article_dict[article_dict["title"]] = article_link
+            page += 1
 
     def save_to_csv(self, file_name):
         df = pd.DataFrame(self.articles, columns=["title", "link", "contents"])
